@@ -3,10 +3,12 @@
 namespace App\Listeners;
 
 use App\Events\UserRegisteredEvent;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Mail\WelcomeEmail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendWelcomeEmail
+class SendWelcomeEmail implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -26,6 +28,6 @@ class SendWelcomeEmail
      */
     public function handle(UserRegisteredEvent $event)
     {
-        //
+        Mail::to($event->user)->send(new WelcomeEmail($event->user));
     }
 }
